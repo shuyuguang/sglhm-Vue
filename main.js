@@ -1,62 +1,69 @@
 // main.js
 
-// 1. 定义所有页面组件
-// 为了方便，我们先用简单的模板占位
+// 1. 定义一个通用的新页面模板
+// $route.meta.title 会从下面的路由规则中获取页面标题
+const NewPageComponent = {
+    template: `
+        <div class="new-page-container">
+            <header class="new-page-header">
+                <i class="fas fa-arrow-left back-button" @click="$router.go(-1)"></i>
+                <h1 class="new-page-title">{{ $route.meta.title }}</h1>
+            </header>
+            <main class="new-page-content">
+                <!-- 这里是页面的具体内容，暂时留空 -->
+            </main>
+        </div>
+    `
+};
+
+// 2. 定义主页组件
 const HomeComponent = { template: '<h1>欢迎来到 felotus</h1><p>简约，是一种态度。</p>' };
-const PersonalizationComponent = { template: '<h1>个性化设置</h1><p>在这里调整你的主题和外观。</p>' };
-const RolesComponent = { template: '<h1>角色管理</h1><p>在这里创建和管理你的角色。</p>' };
-const ApiComponent = { template: '<h1>API</h1><p>API 相关文档和设置。</p>' };
-const RegexComponent = { template: '<h1>正则</h1><p>正则表达式工具和测试。</p>' };
-const ShortcutsComponent = { template: '<h1>快捷键</h1><p>查看和自定义快捷键。</p>' };
-const DataComponent = { template: '<h1>数据管理</h1><p>管理你的应用数据。</p>' };
-const ReportComponent = { template: '<h1>年度报告</h1><p>查看你的年度使用报告。</p>' };
 
-// !!! 新增的组件在这里 !!!
-const AddCharacterComponent = { template: '<h1>添加角色</h1><p>在这里创建一个新的角色。</p>' };
-const SearchServiceComponent = { template: '<h1>搜索服务</h1><p>在这里使用全局搜索服务。</p>' };
-const VoiceServiceComponent = { template: '<h1>语音服务</h1><p>在这里使用语音识别和合成服务。</p>' };
-const AnniversaryComponent = { template: '<h1>纪念日</h1><p>查看所有重要的纪念日。</p>' };
-const FavoritesComponent = { template: '<h1>收藏</h1><p>你的收藏夹。</p>' };
-const MailComponent = { template: '<h1>邮件</h1><p>你的收件箱。</p>' };
-const AnnouncementsComponent = { template: '<h1>公告</h1><p>查看最新的公告信息。</p>' };
-const HelpComponent = { template: '<h1>帮助</h1><p>需要帮助吗？在这里找到答案。</p>' };
-const EditProfileComponent = { template: '<h1>编辑个人资料</h1><p>在这里更新你的头像、昵称等信息。</p>' };
-
-
-// 2. 定义路由规则
+// 3. 定义路由规则
+// 我们为每个链接都创建一个路由，并使用 meta 字段来存储页面标题
 const routes = [
-    { path: '/', component: HomeComponent },
-    { path: '/personalization', component: PersonalizationComponent },
-    { path: '/roles', component: RolesComponent },
-    { path: '/api', component: ApiComponent },
-    { path: '/regex', component: RegexComponent },
-    { path: '/shortcuts', component: ShortcutsComponent },
-    { path: '/data', component: DataComponent },
-    { path: '/report', component: ReportComponent },
-    
-    // !!! 新增的路由规则在这里 !!!
-    { path: '/add-character', component: AddCharacterComponent },
-    { path: '/search-service', component: SearchServiceComponent },
-    { path: '/voice-service', component: VoiceServiceComponent },
-    { path: '/anniversary', component: AnniversaryComponent },
-    { path: '/favorites', component: FavoritesComponent },
-    { path: '/mail', component: MailComponent },
-    { path: '/announcements', component: AnnouncementsComponent },
-    { path: '/help', component: HelpComponent },
-    { path: '/edit-profile', component: EditProfileComponent },
+    // 基础页面
+    { path: '/', component: HomeComponent, meta: { title: '首页' } },
+    { path: '/personalization', component: NewPageComponent, meta: { title: '个性化' } },
+    { path: '/roles', component: NewPageComponent, meta: { title: '角色' } },
+    { path: '/api', component: NewPageComponent, meta: { title: 'API' } },
+    { path: '/search', component: NewPageComponent, meta: { title: '搜索服务' } },
+    { path: '/voice', component: NewPageComponent, meta: { title: '语音服务' } },
+    { path: '/regex', component: NewPageComponent, meta: { title: '正则' } },
+    { path: '/shortcuts', component: NewPageComponent, meta: { title: '快捷键' } },
+    { path: '/data', component: NewPageComponent, meta: { title: '数据管理' } },
+    { path: '/report', component: NewPageComponent, meta: { title: '年度报告' } },
 
-    // 捕获所有未匹配的路由，可以重定向到首页
+    // !!! 新增的路由规则 !!!
+    // 顶栏图标
+    { path: '/global-search', component: NewPageComponent, meta: { title: '全局搜索' } },
+    { path: '/add-character', component: NewPageComponent, meta: { title: '添加角色' } },
+    
+    // 侧边栏顶部图标
+    { path: '/anniversary', component: NewPageComponent, meta: { title: '纪念日' } },
+    { path: '/favorites', component: NewPageComponent, meta: { title: '收藏' } },
+    { path: '/inbox', component: NewPageComponent, meta: { title: '收件箱' } },
+    { path: '/announcements', component: NewPageComponent, meta: { title: '公告' } },
+    { path: '/help', component: NewPageComponent, meta: { title: '帮助' } },
+    
+    // 侧边栏用户区
+    { path: '/profile', component: NewPageComponent, meta: { title: '编辑资料' } },
+
+    // 捕获所有未匹配的路由，重定向到首页
     { path: '/:pathMatch(.*)*', redirect: '/' }
 ];
 
-// 3. 创建路由实例
+// 4. 创建路由实例
 const router = VueRouter.createRouter({
-    history: VueRouter.createWebHashHistory(),
+    history: VueRouter.createWebHashHistory(), // 使用 hash 模式，对静态部署最友好
     routes,
+    // 每次路由切换后，都滚动到页面顶部
+    scrollBehavior(to, from, savedPosition) {
+        return { top: 0 }
+    },
 });
 
-// 4. 创建 Vue 应用实例
-// 这里的 data 和 methods 保持不变，它们负责侧边栏的开关和手势滑动
+// 5. 创建 Vue 应用实例
 const app = Vue.createApp({
     data() {
         return {
@@ -66,9 +73,14 @@ const app = Vue.createApp({
         }
     },
     methods: {
+        // 点击链接后自动关闭侧边栏
+        closeSidebar() {
+            this.isSidebarOpen = false;
+        },
         toggleSidebar() {
             this.isSidebarOpen = !this.isSidebarOpen;
         },
+        // ... 其他触摸事件处理函数保持不变
         handleTouchStart(event) {
             this.touchStartX = event.touches[0].clientX;
             this.touchStartY = event.touches[0].clientY;
@@ -111,11 +123,19 @@ const app = Vue.createApp({
             this.touchStartX = 0;
             this.touchStartY = 0;
         }
+    },
+    watch: {
+        // 监听路由变化，如果侧边栏是打开的，就关闭它
+        '$route'() {
+            if (this.isSidebarOpen) {
+                this.closeSidebar();
+            }
+        }
     }
 });
 
-// 5. 使用路由
+// 6. 告诉 Vue 应用要使用我们创建的路由
 app.use(router);
 
-// 6. 挂载应用
+// 7. 挂载应用
 app.mount('#app');

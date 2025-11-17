@@ -247,11 +247,59 @@ body {
     padding: 1.25rem;
 }
 
-/* !!! 新增的样式在这里 !!! */
-/* 确保顶栏和侧边栏顶部的 router-link 链接颜色正确 */
-.top-bar-right a,
-.sidebar-top-actions a,
-.sidebar-user-area a {
-    color: inherit;
+/* 新页面容器 */
+.new-page-container {
+    padding: 0; /* 新页面不需要 main-content 的内边距 */
+}
+
+/* 新页面的头部 */
+.new-page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4rem;
+    background-color: var(--sidebar-bg);
+    display: flex;
+    align-items: center;
+    padding: 0 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    z-index: 1000;
+}
+
+/* 返回按钮 */
+.back-button {
+    font-size: 1.2rem;
+    color: var(--secondary-text-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-left: -0.5rem; /* 抵消内边距，使其视觉上更靠左 */
+    transition: color 0.2s;
+}
+
+.back-button:hover {
+    color: var(--primary-text-color);
+}
+
+/* 页面标题 */
+.new-page-title {
+    margin: 0;
+    font-size: 1.13rem;
+    font-weight: 600;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 新页面的主内容区域（为头部留出空间） */
+.new-page-content {
+    padding: 5.25rem 1.25rem 1.25rem; /* 顶部留出 4rem 头部 + 1.25rem 间距 */
+}
+
+/* 确保顶栏的 router-link 表现得像图标 */
+.top-bar-right a {
+    text-decoration: none;
+}
+.action-item {
     text-decoration: none;
 }
