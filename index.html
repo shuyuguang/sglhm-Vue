@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>菲洛图 - felotus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="app">
+
+        <!-- 顶栏 -->
+        <header class="top-bar">
+            <div class="top-bar-left" @click="toggleSidebar">
+                <img src="https://i.postimg.cc/Yq19VCkN/afelotus.jpg" alt="avatar" class="avatar">
+                <span class="name">felotus</span>
+            </div>
+            <div class="top-bar-right">
+                <i class="icon fas fa-search"></i>
+                <i class="icon fas fa-ellipsis-v"></i>
+            </div>
+        </header>
+
+        <!-- 侧边栏遮罩层 -->
+        <div class="sidebar-backdrop" v-if="isSidebarOpen" @click="toggleSidebar"></div>
+
+        <!-- 侧边栏 -->
+        <aside 
+            class="sidebar" 
+            :class="{ open: isSidebarOpen }"
+            @touchstart="handleTouchStart"
+            @touchmove="handleTouchMove"
+            @touchend="handleTouchEnd"
+        >
+            <!-- 顶部六个图标 -->
+            <div class="sidebar-top-actions">
+                <div class="action-item"><i class="icon fas fa-calendar-day"></i></div>
+                <div class="action-item"><i class="icon fas fa-star"></i></div>
+                <div class="action-item"><i class="icon fas fa-envelope"></i></div>
+                <div class="action-item"><i class="icon fas fa-bullhorn"></i></div>
+                <div class="action-item"><i class="icon fas fa-question-circle"></i></div>
+                <div class="action-item" @click="toggleSidebar"><i class="icon fas fa-arrow-right close-btn"></i></div>
+            </div>
+
+            <!-- 可滚动区域 -->
+            <div class="sidebar-scroll-container">
+                <!-- 用户区 -->
+                <div class="sidebar-user-area">
+                    <img src="https://i.postimg.cc/Yq19VCkN/afelotus.jpg" alt="avatar" class="sidebar-avatar">
+                    <div class="user-info">
+                        <div class="sidebar-name">felotus</div>
+                        <div class="sidebar-email">your.email@example.com</div>
+                    </div>
+                    <i class="icon fas fa-pen edit-profile-icon"></i>
+                </div>
+
+                <!-- 内容区 -->
+                <nav class="sidebar-content-area nav-list">
+                    <ul>
+                        <li><router-link to="/personalization"><i class="nav-icon fas fa-palette fa-fw"></i><span>个性化</span></router-link></li>
+                        <li><router-link to="/roles"><i class="nav-icon fas fa-user-tag fa-fw"></i><span>角色</span></router-link></li>
+                    </ul>
+                    <hr>
+                    <ul>
+                        <li><router-link to="/api"><i class="nav-icon fas fa-plug fa-fw"></i><span>API</span></router-link></li>
+                        <!-- !!! 修改在这里：更换了搜索图标 !!! -->
+                        <li><router-link to="/search"><i class="nav-icon fas fa-magnifying-glass-plus fa-fw"></i><span>搜索</span></router-link></li>
+                        <!-- !!! 修改在这里：更换了语音图标 !!! -->
+                        <li><router-link to="/voice"><i class="nav-icon fas fa-microphone-lines fa-fw"></i><span>语音</span></router-link></li>
+                        <!-- !!! 修改在这里：删除了提示词条目 !!! -->
+                        <li><router-link to="/regex"><i class="nav-icon fas fa-file-code fa-fw"></i><span>正则</span></router-link></li>
+                        <li><router-link to="/shortcuts"><i class="nav-icon fas fa-bolt fa-fw"></i><span>快捷键</span></router-link></li>
+                    </ul>
+                    <hr>
+                    <ul>
+                        <li><router-link to="/data"><i class="nav-icon fas fa-database fa-fw"></i><span>数据管理</span></router-link></li>
+                        <li><router-link to="/report"><i class="nav-icon fas fa-chart-pie fa-fw"></i><span>年度报告</span></router-link></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <main 
+            class="main-content"
+            @touchstart="handleMainTouchStart"
+            @touchmove="handleMainTouchMove"
+            @touchend="handleMainTouchEnd"
+        >
+            <router-view></router-view>
+        </main>
+
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.js"></script>
+    <script src="main.js"></script>
+
+</body>
+</html>

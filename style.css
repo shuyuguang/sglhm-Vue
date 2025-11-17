@@ -1,0 +1,252 @@
+/* 使用 CSS 变量定义颜色，方便全局修改 */
+:root {
+    --bg-color: #f8f9fa;
+    --primary-text-color: #212529;
+    --secondary-text-color: #6c757d;
+    --border-color: #e9ecef;
+    --accent-color: #007bff;
+    --sidebar-bg: #ffffff;
+    --sidebar-header-bg: #2c3e50;
+    --hover-bg-color: #f1f3f5;
+}
+
+/* 全局样式重置和基础设置 */
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--primary-text-color);
+    padding-top: 4rem;
+    transition: background-color 0.3s;
+}
+
+/* 顶栏样式 */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4rem;
+    background-color: var(--sidebar-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    z-index: 1000;
+}
+
+.top-bar-left {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    object-fit: cover;
+}
+
+.name {
+    font-weight: 600;
+    font-size: 1.13rem;
+}
+
+.top-bar-right .icon {
+    font-size: 1.2rem; /* 顶栏图标大小 */
+    margin-left: 1.5rem;
+    color: var(--secondary-text-color);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.top-bar-right .icon:hover {
+    color: var(--primary-text-color);
+}
+
+/* 侧边栏样式 */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    background-color: var(--sidebar-bg);
+    box-shadow: 0.25rem 0 0.94rem rgba(0, 0, 0, 0.05);
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1002;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    touch-action: pan-y;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1001;
+    transition: opacity 0.3s;
+}
+
+/* 1. 顶部图标区 */
+.sidebar-top-actions {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.6rem;
+    padding: 0.9rem 1.25rem;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.action-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar-top-actions .icon {
+    font-size: 1.2rem;
+    color: var(--secondary-text-color);
+    cursor: pointer;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/*
+  !!! 修改在这里 !!!
+  把返回键的 font-size 从 1.63rem 改为 1.2rem，
+  让它和其他图标一样大。
+*/
+.sidebar-top-actions .icon.close-btn {
+    font-size: 1.2rem;
+}
+
+.sidebar-top-actions .icon:hover {
+    background-color: var(--hover-bg-color);
+    color: var(--primary-text-color);
+}
+
+/* 可滚动容器 */
+.sidebar-scroll-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.2rem;
+}
+
+/* 2. 用户区 */
+.sidebar-user-area {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.56rem;
+}
+
+.sidebar-avatar {
+    width: 3.13rem;
+    height: 3.13rem;
+    border: none;
+    border-radius: 50%;
+    margin-right: 0.94rem;
+    flex-shrink: 0;
+}
+
+.user-info {
+    flex-grow: 1;
+    line-height: 1.4;
+}
+
+.sidebar-name {
+    font-size: 1.13rem;
+    font-weight: 600;
+}
+.sidebar-email {
+    font-size: 0.88rem;
+    color: var(--secondary-text-color);
+}
+
+.edit-profile-icon {
+    font-size: 1.2rem; /* 与顶栏图标大小完全一致 */
+    color: var(--secondary-text-color);
+    cursor: pointer;
+    transition: color 0.2s;
+    /* 增加内边距，让它更容易被点到 */
+    padding: 0.5rem; 
+    margin-right: -0.5rem; /* 抵消右侧内边距，保持对齐 */
+}
+
+.edit-profile-icon:hover {
+    color: var(--primary-text-color);
+}
+
+
+/* 4. 内容区 */
+.sidebar-content-area {
+    padding-top: 0;
+}
+
+.nav-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-list li a {
+    display: flex;
+    align-items: center;
+    padding: 0.88rem 0.63rem;
+    color: var(--primary-text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+    margin-bottom: 0;
+}
+
+.nav-list li a.router-link-active {
+    background-color: var(--hover-bg-color);
+    color: var(--accent-color);
+}
+
+.nav-list li a:hover {
+    background-color: var(--hover-bg-color);
+}
+
+.nav-icon {
+    width: 1.5rem;
+    margin-right: 1.25rem;
+    text-align: center;
+    color: var(--secondary-text-color);
+    font-size: 1.15rem; /* 导航列表图标大小 */
+}
+
+.sidebar-content-area hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 0.31rem 0;
+}
+
+/* 主内容区域 */
+.main-content {
+    padding: 1.25rem;
+}
