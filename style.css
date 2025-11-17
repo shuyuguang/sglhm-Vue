@@ -133,13 +133,9 @@ body {
     transition: background-color 0.2s, color 0.2s;
 }
 
-/*
-  !!! 修改在这里 !!!
-  把返回键的 font-size 从 1.63rem 改为 1.2rem，
-  让它和其他图标一样大。
-*/
+
 .sidebar-top-actions .icon.close-btn {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
 }
 
 .sidebar-top-actions .icon:hover {
@@ -249,4 +245,13 @@ body {
 /* 主内容区域 */
 .main-content {
     padding: 1.25rem;
+}
+
+/* !!! 新增的样式在这里 !!! */
+/* 确保顶栏和侧边栏顶部的 router-link 链接颜色正确 */
+.top-bar-right a,
+.sidebar-top-actions a,
+.sidebar-user-area a {
+    color: inherit;
+    text-decoration: none;
 }

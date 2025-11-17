@@ -17,9 +17,10 @@
                 <img src="https://i.postimg.cc/Yq19VCkN/afelotus.jpg" alt="avatar" class="avatar">
                 <span class="name">felotus</span>
             </div>
+            <!-- !!! 修改在这里：将图标用 router-link 包裹 !!! -->
             <div class="top-bar-right">
-                <i class="icon fas fa-search"></i>
-                <i class="icon fas fa-ellipsis-v"></i>
+                <router-link to="/search-service"><i class="icon fas fa-search"></i></router-link>
+                <router-link to="/add-character"><i class="icon fas fa-plus"></i></router-link>
             </div>
         </header>
 
@@ -34,13 +35,13 @@
             @touchmove="handleTouchMove"
             @touchend="handleTouchEnd"
         >
-            <!-- 顶部六个图标 -->
+            <!-- !!! 修改在这里：将图标用 router-link 包裹 (除了关闭按钮) !!! -->
             <div class="sidebar-top-actions">
-                <div class="action-item"><i class="icon fas fa-calendar-day"></i></div>
-                <div class="action-item"><i class="icon fas fa-star"></i></div>
-                <div class="action-item"><i class="icon fas fa-envelope"></i></div>
-                <div class="action-item"><i class="icon fas fa-bullhorn"></i></div>
-                <div class="action-item"><i class="icon fas fa-question-circle"></i></div>
+                <router-link to="/anniversary" class="action-item"><i class="icon fas fa-calendar-day"></i></router-link>
+                <router-link to="/favorites" class="action-item"><i class="icon fas fa-star"></i></router-link>
+                <router-link to="/mail" class="action-item"><i class="icon fas fa-envelope"></i></router-link>
+                <router-link to="/announcements" class="action-item"><i class="icon fas fa-bullhorn"></i></router-link>
+                <router-link to="/help" class="action-item"><i class="icon fas fa-question-circle"></i></router-link>
                 <div class="action-item" @click="toggleSidebar"><i class="icon fas fa-arrow-right close-btn"></i></div>
             </div>
 
@@ -53,7 +54,8 @@
                         <div class="sidebar-name">felotus</div>
                         <div class="sidebar-email">your.email@example.com</div>
                     </div>
-                    <i class="icon fas fa-pen edit-profile-icon"></i>
+                    <!-- !!! 修改在这里：将编辑图标用 router-link 包裹 !!! -->
+                    <router-link to="/edit-profile"><i class="icon fas fa-pen edit-profile-icon"></i></router-link>
                 </div>
 
                 <!-- 内容区 -->
@@ -65,11 +67,10 @@
                     <hr>
                     <ul>
                         <li><router-link to="/api"><i class="nav-icon fas fa-plug fa-fw"></i><span>API</span></router-link></li>
-                        <!-- !!! 修改在这里：更换了搜索图标 !!! -->
-                        <li><router-link to="/search"><i class="nav-icon fas fa-magnifying-glass-plus fa-fw"></i><span>搜索</span></router-link></li>
-                        <!-- !!! 修改在这里：更换了语音图标 !!! -->
-                        <li><router-link to="/voice"><i class="nav-icon fas fa-microphone-lines fa-fw"></i><span>语音</span></router-link></li>
-                        <!-- !!! 修改在这里：删除了提示词条目 !!! -->
+                        <!-- !!! 修改在这里：更换图标和文字，并更新链接 !!! -->
+                        <li><router-link to="/search-service"><i class="nav-icon fas fa-globe fa-fw"></i><span>搜索服务</span></router-link></li>
+                        <!-- !!! 修改在这里：更换图标和文字，并更新链接 !!! -->
+                        <li><router-link to="/voice-service"><i class="nav-icon fas fa-circle-play fa-fw"></i><span>语音服务</span></router-link></li>
                         <li><router-link to="/regex"><i class="nav-icon fas fa-file-code fa-fw"></i><span>正则</span></router-link></li>
                         <li><router-link to="/shortcuts"><i class="nav-icon fas fa-bolt fa-fw"></i><span>快捷键</span></router-link></li>
                     </ul>
@@ -89,6 +90,7 @@
             @touchmove="handleMainTouchMove"
             @touchend="handleMainTouchEnd"
         >
+            <!-- router-view 会根据当前 URL 显示对应的组件 -->
             <router-view></router-view>
         </main>
 
