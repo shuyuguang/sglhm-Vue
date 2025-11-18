@@ -1,6 +1,6 @@
 // main.js
 
-// 1. 定义一个通用的新页面模板 (保持不变)
+// 1. 定义一个通用的新页面模板
 const NewPageComponent = {
     template: `
         <div class="new-page-container">
@@ -15,17 +15,13 @@ const NewPageComponent = {
     `
 };
 
-// 2. 定义主页组件 (保持不变)
+// 2. 定义主页组件
 const HomeComponent = { template: '<h1>欢迎来到 felotus</h1><p>简约，是一种态度。</p>' };
 
 // 3. 定义路由规则
 const routes = [
     // 基础页面
     { path: '/', component: HomeComponent, meta: { title: '首页' } },
-    // !!! 新增的侧边栏路由，它没有 component，因为它只是一个“状态” !!!
-    { path: '/sidebar', name: 'sidebar' }, 
-    
-    // 其他页面路由保持不变
     { path: '/personalization', component: NewPageComponent, meta: { title: '个性化' } },
     { path: '/roles', component: NewPageComponent, meta: { title: '角色' } },
     { path: '/api', component: NewPageComponent, meta: { title: 'API' } },
@@ -35,18 +31,31 @@ const routes = [
     { path: '/shortcuts', component: NewPageComponent, meta: { title: '快捷键' } },
     { path: '/data', component: NewPageComponent, meta: { title: '数据管理' } },
     { path: '/report', component: NewPageComponent, meta: { title: '年度报告' } },
+    
+    // 顶栏图标
     { path: '/global-search', component: NewPageComponent, meta: { title: '全局搜索' } },
     { path: '/add-character', component: NewPageComponent, meta: { title: '添加角色' } },
+    
+    // 侧边栏顶部图标
     { path: '/anniversary', component: NewPageComponent, meta: { title: '纪念日' } },
     { path: '/favorites', component: NewPageComponent, meta: { title: '收藏' } },
     { path: '/inbox', component: NewPageComponent, meta: { title: '收件箱' } },
     { path: '/announcements', component: NewPageComponent, meta: { title: '公告' } },
     { path: '/help', component: NewPageComponent, meta: { title: '帮助' } },
+    
+    // 侧边栏用户区
     { path: '/profile', component: NewPageComponent, meta: { title: '编辑资料' } },
+
+    // !!! 新增的侧边栏路由 !!!
+    // 这个路由没有 component，因为它不渲染到 <router-view>
+    // 它的作用仅仅是作为一个状态，告诉我们应该显示侧边栏
+    { path: '/sidebar', name: 'sidebar' },
+
+    // 捕获所有未匹配的路由，重定向到首页
     { path: '/:pathMatch(.*)*', redirect: '/' }
 ];
 
-// 4. 创建路由实例 (保持不变)
+// 4. 创建路由实例
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHashHistory(),
     routes,
@@ -59,77 +68,88 @@ const router = VueRouter.createRouter({
 const app = Vue.createApp({
     data() {
         return {
-            // !!! 移除了 isSidebarOpen !!!
+            // 我们不再需要 isSidebarOpen 这个变量了！
             touchStartX: 0,
             touchStartY: 0,
         }
     },
-    // !!! 新增 computed 计算属性 !!!
     computed: {
-        // 这个计算属性会实时告诉我们，当前路由是不是 '/sidebar'
-        isSidebarRouteActive() {
-            return this.$route.path === '/sidebar';
+        // !!! 新增的计算属性 !!!
+        // 通过判断当前路由的名称是否为 'sidebar' 来决定侧边栏是否显示
+        // 这是新的“单一数据源”
+        isSidebarVisible() {
+            return this.$route.name === 'sidebar';
         }
     },
     methods: {
-        // !!! 移除了 toggleSidebar 和 closeSidebar !!!
-
-        // 侧边栏的触摸事件处理
+        // !!! 重写方法 !!!
+        openSidebar() {
+            // 如果侧边栏还没打开，就跳转到 /sidebar 路由
+            if (!this.isSidebarVisible) {
+                this.$router.push({ name: 'sidebar' });
+            }
+        },
+        closeSidebar() {
+            // 如果侧边栏是打开的，就返回上一个路由
+            if (this.isSidebarVisible) {
+                this.$router.back();
+            }
+        },
+        
+        // --- 触摸事件处理函数更新 ---
         handleTouchStart(event) {
             this.touchStartX = event.touches[0].clientX;
             this.touchStartY = event.touches[0].clientY;
         },
         handleTouchMove(event) {
-            // 这个逻辑可以简化，因为主要判断在 touchEnd
-            if (!this.isSidebarRouteActive) return;
             const deltaX = event.touches[0].clientX - this.touchStartX;
             const deltaY = Math.abs(event.touches[0].clientY - this.touchStartY);
+            // 在侧边栏上，只响应向左的滑动
             if (deltaX < -10 && Math.abs(deltaX) > deltaY) {
                 event.preventDefault();
             }
         },
         handleTouchEnd(event) {
-            // 如果侧边栏是打开的，并且向左滑动，则返回上一页
-            if (!this.isSidebarRouteActive) return;
             const touchEndX = event.changedTouches[0].clientX;
             const swipeDistance = this.touchStartX - touchEndX;
+            // 如果向左滑动超过50像素，就关闭侧边栏
             if (swipeDistance > 50) {
-                this.$router.back(); // !!! 核心修改：执行路由返回 !!!
+                this.closeSidebar();
             }
             this.touchStartX = 0;
             this.touchStartY = 0;
         },
-
-        // 主内容区域的触摸事件处理
         handleMainTouchStart(event) {
             this.touchStartX = event.touches[0].clientX;
             this.touchStartY = event.touches[0].clientY;
         },
         handleMainTouchMove(event) {
-            if (this.isSidebarRouteActive) return;
+            if (this.touchStartX === 0) return; 
             const deltaX = event.touches[0].clientX - this.touchStartX;
             const deltaY = Math.abs(event.touches[0].clientY - this.touchStartY);
+            // 在主内容区，只响应向右的滑动
             if (deltaX > 10 && deltaX > deltaY) {
                 event.preventDefault();
             }
         },
         handleMainTouchEnd(event) {
-            // 如果侧边栏是关闭的，并且向右滑动，则导航到 /sidebar
-            if (this.isSidebarRouteActive) return;
+            if (this.touchStartX === 0) return;
             const touchEndX = event.changedTouches[0].clientX;
             const swipeDistance = touchEndX - this.touchStartX;
+            // 如果向右滑动超过50像素，就打开侧边栏
             if (swipeDistance > 50) {
-                this.$router.push('/sidebar'); // !!! 核心修改：导航到侧边栏路由 !!!
+                this.openSidebar();
             }
             this.touchStartX = 0;
             this.touchStartY = 0;
         }
     },
-    // !!! 移除了 watch 监听器，因为不再需要了 !!!
+    // 我们不再需要 watch 路由了，因为点击侧边栏里的链接
+    // 会自动改变路由，isSidebarVisible 计算属性会变为 false，侧边栏自动关闭
 });
 
-// 6. 告诉 Vue 应用要使用我们创建的路由 (保持不变)
+// 6. 告诉 Vue 应用要使用我们创建的路由
 app.use(router);
 
-// 7. 挂载应用 (保持不变)
+// 7. 挂载应用
 app.mount('#app');
