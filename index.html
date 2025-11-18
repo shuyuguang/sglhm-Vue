@@ -13,84 +13,25 @@
 
         <!-- 顶栏 -->
         <header class="top-bar">
-            <div class="top-bar-left" @click="toggleSidebar">
+            <!-- !!! 修改在这里：整个左侧区域变成一个 router-link !!! -->
+            <router-link to="/sidebar" class="top-bar-left">
                 <img src="https://i.postimg.cc/Yq19VCkN/afelotus.jpg" alt="avatar" class="avatar">
                 <span class="name">felotus</span>
-            </div>
+            </router-link>
+            
             <div class="top-bar-right">
-                <!-- !!! 修改在这里：添加 router-link !!! -->
                 <router-link to="/global-search"><i class="icon fas fa-search"></i></router-link>
                 <router-link to="/add-character"><i class="icon fas fa-plus"></i></router-link>
             </div>
         </header>
 
-        <!-- 侧边栏遮罩层 -->
-        <div class="sidebar-backdrop" v-if="isSidebarOpen" @click="toggleSidebar"></div>
-
-        <!-- 侧边栏 -->
-        <aside 
-            class="sidebar" 
-            :class="{ open: isSidebarOpen }"
-            @touchstart="handleTouchStart"
-            @touchmove="handleTouchMove"
-            @touchend="handleTouchEnd"
-        >
-            <!-- 顶部六个图标 -->
-            <div class="sidebar-top-actions">
-                <!-- !!! 修改在这里：为每个图标添加 router-link !!! -->
-                <router-link to="/anniversary" class="action-item"><i class="icon fas fa-calendar-day"></i></router-link>
-                <router-link to="/favorites" class="action-item"><i class="icon fas fa-star"></i></router-link>
-                <router-link to="/inbox" class="action-item"><i class="icon fas fa-envelope"></i></router-link>
-                <router-link to="/announcements" class="action-item"><i class="icon fas fa-bullhorn"></i></router-link>
-                <router-link to="/help" class="action-item"><i class="icon fas fa-question-circle"></i></router-link>
-                <div class="action-item" @click="toggleSidebar"><i class="icon fas fa-arrow-right close-btn"></i></div>
-            </div>
-
-            <!-- 可滚动区域 -->
-            <div class="sidebar-scroll-container">
-                <!-- 用户区 -->
-                <div class="sidebar-user-area">
-                    <img src="https://i.postimg.cc/Yq19VCkN/afelotus.jpg" alt="avatar" class="sidebar-avatar">
-                    <div class="user-info">
-                        <div class="sidebar-name">felotus</div>
-                        <div class="sidebar-email">your.email@example.com</div>
-                    </div>
-                    <!-- !!! 修改在这里：为编辑图标添加 router-link !!! -->
-                    <router-link to="/profile"><i class="icon fas fa-pen edit-profile-icon"></i></router-link>
-                </div>
-
-                <!-- 内容区 -->
-                <nav class="sidebar-content-area nav-list">
-                    <ul>
-                        <li><router-link to="/personalization"><i class="nav-icon fas fa-palette fa-fw"></i><span>个性化</span></router-link></li>
-                        <li><router-link to="/roles"><i class="nav-icon fas fa-user-tag fa-fw"></i><span>角色</span></router-link></li>
-                    </ul>
-                    <hr>
-                    <ul>
-                        <li><router-link to="/api"><i class="nav-icon fas fa-plug fa-fw"></i><span>API</span></router-link></li>
-                        <!-- !!! 修改在这里：更换图标和名称 !!! -->
-                        <li><router-link to="/search"><i class="nav-icon fas fa-globe fa-fw"></i><span>搜索服务</span></router-link></li>
-                        <!-- !!! 修改在这里：更换图标和名称 !!! -->
-                        <li><router-link to="/voice"><i class="nav-icon fas fa-play fa-fw"></i><span>语音服务</span></router-link></li>
-                        <li><router-link to="/regex"><i class="nav-icon fas fa-file-code fa-fw"></i><span>正则</span></router-link></li>
-                        <li><router-link to="/shortcuts"><i class="nav-icon fas fa-bolt fa-fw"></i><span>快捷键</span></router-link></li>
-                    </ul>
-                    <hr>
-                    <ul>
-                        <li><router-link to="/data"><i class="nav-icon fas fa-database fa-fw"></i><span>数据管理</span></router-link></li>
-                        <li><router-link to="/report"><i class="nav-icon fas fa-chart-pie fa-fw"></i><span>年度报告</span></router-link></li>
-                    </ul>
-                </nav>
-            </div>
-        </aside>
+        <!-- 
+            !!! 注意：这里的 <aside> 侧边栏和遮罩层已经被完全移除 !!!
+            它的内容被做成了一个独立的页面，由 Vue Router 管理。
+        -->
 
         <!-- 主内容区域 -->
-        <main 
-            class="main-content"
-            @touchstart="handleMainTouchStart"
-            @touchmove="handleMainTouchMove"
-            @touchend="handleMainTouchEnd"
-        >
+        <main class="main-content">
             <!-- Vue Router 会在这里渲染匹配到的组件 -->
             <router-view></router-view>
         </main>
