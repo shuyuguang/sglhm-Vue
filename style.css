@@ -303,3 +303,8 @@ body {
 .action-item {
     text-decoration: none;
 }
+
+/* !!! 新增：用于在特定情况下禁用侧边栏动画 !!! */
+.sidebar.no-transition {
+    transition: none;
+}

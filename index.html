@@ -29,9 +29,11 @@
         <div class="sidebar-backdrop" v-if="isSidebarVisible" @click="closeSidebar"></div>
 
         <!-- 侧边栏 -->
+        侧边栏 -->
         <aside 
             class="sidebar" 
-            :class="{ open: isSidebarVisible }"
+            <!-- !!! 修改在这里：增加了 'no-transition' 的条件绑定 !!! -->
+            :class="{ open: isSidebarVisible, 'no-transition': isNavigatingBackToSidebar }"
             @touchstart="handleTouchStart"
             @touchmove="handleTouchMove"
             @touchend="handleTouchEnd"
